@@ -7,15 +7,16 @@ import (
 )
 
 func main() {
-	nodeType := os.Args[0]
+	nodeType := os.Args[1]
 	println("*****")
 	println(nodeType)
+	println(os.Args[2])
 	println("*****")
 	switch nodeType {
 	case "master":
 		core.GetMasterNode().Start()
 	case "worker":
-		core.GetWorkerNode().Start()
+		core.GetWorkerNode(os.Args[2]).Start()
 	default:
 		panic("invalid node type")
 	}

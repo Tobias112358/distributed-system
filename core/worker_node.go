@@ -15,9 +15,9 @@ type WorkerNode struct {
 	c    NodeServiceClient // grpc client
 }
 
-func (n *WorkerNode) Init() (err error) {
+func (n *WorkerNode) Init(ip string) (err error) {
 	// connect to master node
-	n.conn, err = grpc.Dial("localhost:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	n.conn, err = grpc.Dial(ip+":50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		return err
 	}
@@ -58,13 +58,13 @@ func (n *WorkerNode) Start() {
 
 var workerNode *WorkerNode
 
-func GetWorkerNode() *WorkerNode {
+func GetWorkerNode(ip string) *WorkerNode {
 	if workerNode == nil {
 		// node
 		workerNode = &WorkerNode{}
 
 		// initialize node
-		if err := workerNode.Init(); err != nil {
+		if err := workerNode.Init(ip); err != nil {
 			panic(err)
 		}
 	}
